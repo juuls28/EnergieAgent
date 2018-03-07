@@ -6,9 +6,14 @@
 package energieagent.input;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,13 +69,23 @@ public class CSVInput extends Thread{
     
     private void exportToCSV(){
         String csvFile = "..\\Dateien\\aktuelleWerte.csv";
-        try (FileWriter writer = new FileWriter(csvFile)) {
-            CSVWriter.writeLine(writer, Arrays.asList("Timestamp", "Auspeicherleistung","Elektrische Leistung","Speicherfuellstand"));
-            CSVWriter.writeLine(writer, Arrays.asList(timestamp, Double.toString(this.ausspeicherLeistung),Double.toString(this.elektrischeLeistung),Double.toString(this.speicherstand)));
+        Path path = Paths.get(csvFile);
+        if(Files.exists(path)){
+            System.out.println("Datei existiert!");
+            try {
+                
+            } catch (IOException ex) {
+                Logger.getLogger(CSVInput.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            try (FileWriter writer = new FileWriter(csvFile)) {
+                CSVWriter.writeLine(writer, Arrays.asList("Timestamp", "Auspeicherleistung","Elektrische Leistung","Speicherfuellstand"));
+                CSVWriter.writeLine(writer, Arrays.asList(timestamp, Double.toString(this.ausspeicherLeistung),Double.toString(this.elektrischeLeistung),Double.toString(this.speicherstand)));
 
-            writer.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(CSVInput.class.getName()).log(Level.SEVERE, null, ex);
+                writer.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(CSVInput.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
