@@ -10,7 +10,7 @@ package energieagent;
  * @author Julius
  */
 public class Produktgedaechtnis {
-    Produkt p;
+    //Produkt p;
     Fahrplan dvppZustand;
     Fahrplan kandidat;
     
